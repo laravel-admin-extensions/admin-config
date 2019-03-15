@@ -1,19 +1,20 @@
 {
     "name": "fourn/admin-config",
-    "description": "description...",
+    "description": "advanced laravel-admin config",
     "type": "library",
-    "keywords": ["laravel-admin", "extension"],
+    "keywords": ["laravel-admin", "extension", "config"],
     "homepage": "https://github.com/fourn/admin-config",
     "license": "MIT",
     "authors": [
         {
-            "name": "your name",
-            "email": "your email"
+            "name": "fourn",
+            "email": "fourn@foxmail.com"
         }
     ],
     "require": {
         "php": ">=7.0.0",
-        "encore/laravel-admin": "~1.6"
+        "encore/laravel-admin": "~1.6",
+        "laravel-admin-ext/config": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"
