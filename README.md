@@ -1,15 +1,21 @@
 admin-config
 ======
 
-基于[laravel-admin](https://github.com/z-song/laravel-admin)的数据库配置管理工具，仅通过配置文件就可生成整个表单，支持使用tab页对配置项进行分组
+基于[laravel-admin](https://github.com/z-song/laravel-admin)的数据库配置管理工具，仅通过配置文件就可生成整个表单，支持使用tab页对配置项进行分组。
 
 
 
 ## 安装：
 
-如果你已经依赖了[config](https://github.com/laravel-admin-extensions/config) 可以跳过下面的步骤
+步骤一：使用composer：
 
-全局引入后台配置项：
+```
+composer require fourn/admin-config
+```
+
+如果你已经依赖并配置好了官方提供的 [config](https://github.com/laravel-admin-extensions/config) 可以跳过下面的步骤
+
+步骤二：全局引入后台配置项：
 
 ```php
 use Encore\Admin\Config\Config;
@@ -24,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-执行数据库迁移：
+步骤三：执行数据库迁移：
 
 ```php
 php artisan migrate
@@ -51,6 +57,8 @@ config('sample.value')
 
 
 
+## 其他：
+
 你可以生成后台菜单：
 
 ```php
@@ -60,8 +68,6 @@ php artisan admin:import admin-config
 或者直接访问：
 
 http://your-host/admin/admin-config
-
-
 
 扩展配置：
 
