@@ -88,6 +88,6 @@ class ConfigForm extends Form
 
         admin_toastr(trans('admin.save_succeeded'));
 
-        return redirect(route('admin.admin-config'));
+        return redirect(admin_base_path('admin-config'));
     }
 }
