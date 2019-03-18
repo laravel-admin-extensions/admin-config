@@ -5,6 +5,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Form\Field;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConfigForm extends Form
@@ -21,7 +22,7 @@ class ConfigForm extends Form
         $data = $this->model->pluck('value', 'name')->toArray();
         $values = [];
         foreach ($data as $key => $val) {
-            $k = str_replace('.', '_', $key);
+            $k = Str::replaceFirst('.', '_', $key);
             $values[$k] = $val;
         }
 
@@ -70,7 +71,7 @@ class ConfigForm extends Form
 
             if ($updates) {
                 foreach ($updates as $key => $val) {
-                    $name = str_replace('_', '.', $key);
+                    $name = Str::replaceFirst('_', '.', $key);
                     if (is_null($val))
                         $val = '';
                     if (is_array($val)) {
