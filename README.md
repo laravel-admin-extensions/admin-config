@@ -5,6 +5,31 @@ admin-config
 
 
 
+## 安装：
+
+如果你已经依赖了[config](https://github.com/laravel-admin-extensions/config) 可以跳过下面的步骤
+
+全局引入后台配置项：
+
+```php
+use Encore\Admin\Config\Config;
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        if (\Schema::hasTable('admin_config') && class_exists(Config::class)) {
+            Config::load();
+        }
+    }
+}
+```
+
+执行数据库迁移：
+
+```php
+php artisan migrate
+```
+
 ## 使用方法：
 
 第一步：发布配置文件：
@@ -15,7 +40,26 @@ artisan vendor:publish --tag=admin-config
 
 第二步：在配置文件中加入配置组及配置项
 
-第三步：使用config函数
+第三步：使用laravel中的config函数
+
+```
+// 获取一组
+config('sample')
+// 获取一项
+config('sample.value')
+```
+
+
+
+你可以生成后台菜单：
+
+```php
+php artisan admin:import admin-config
+```
+
+或者直接访问：
+
+http://your-host/admin/admin-config
 
 
 
@@ -33,14 +77,7 @@ artisan vendor:publish --tag=admin-config
 
 ![Snipaste_2019-03-18_16-21-44](assets/Snipaste_2019-03-18_16-21-44.png)
 
-使用：
 
-```
-// 获取一组
-config('sample')
-// 获取一项
-config('sample.value')
-```
 
 
 
