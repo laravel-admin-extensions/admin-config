@@ -22,7 +22,7 @@ return [
         'value1'=>['help'=>'help content', 'default'=>'default value'],
         'value2'=>['label text', 'placeholder'=>'typing...', 'rules'=>'required'],
         'value3'=>['type'=>'select', 'select label text', 'options'=>['option1'=>'option1', 'option2'=>'option2']],
-        'value4'=>['type'=>'listbox', 'options'=>['foo'=>'foo', 'bar'=>'bar']],
+//        'value4'=>['type'=>'listbox', 'options'=>['foo'=>'foo', 'bar'=>'bar']],
         'value5'=>['type'=>'checkbox', 'options'=>['foo'=>'foo', 'bar'=>'bar']],
         'value6'=>['type'=>'ip'],
         'value7'=>['type'=>'mobile'],
