@@ -67,15 +67,15 @@ http://your-host/admin/admin-config
 
 配置文件：
 
-![Snipaste_2019-03-18_16-15-06](assets/Snipaste_2019-03-18_16-15-06.png)
+![Snipaste_2019-03-18_16-15-06](https://ws2.sinaimg.cn/large/006tKfTcgy1g171pq3t4oj31730pk0vl.jpg)
 
 生成的表单：
 
-![Snipaste_2019-03-18_16-14-05](assets/Snipaste_2019-03-18_16-14-05.png)
+![Snipaste_2019-03-18_16-14-05](https://ws2.sinaimg.cn/large/006tKfTcgy1g171q2oy8vj31b70qjwgd.jpg)
 
 数据库：
 
-![Snipaste_2019-03-18_16-21-44](assets/Snipaste_2019-03-18_16-21-44.png)
+![Snipaste_2019-03-18_16-21-44](https://ws1.sinaimg.cn/large/006tKfTcgy1g171q8ri68j30uk0fa411.jpg)
 
 
 
