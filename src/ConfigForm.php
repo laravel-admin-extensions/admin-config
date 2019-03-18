@@ -86,6 +86,8 @@ class ConfigForm extends Form
             return $response;
         }
 
-        return $this->redirectAfterStore();
+        admin_toastr(trans('admin.save_succeeded'));
+
+        return redirect(route('admin.admin-config'));
     }
 }
