@@ -24,8 +24,8 @@ class AdminConfigController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header(config('admin.extensions.admin-config.header', 'Header'))
-            ->description(config('admin.extensions.admin-config.description', 'Description'))
+            ->header(config('admin.extensions.admin-config.title'))
+            ->description(config('admin.extensions.admin-config.description'))
             ->body($this->form()->configEdit());
     }
 
@@ -65,7 +65,7 @@ class AdminConfigController extends Controller
                                 if (is_numeric($settingKey) && is_string($settingValue)) {
                                     $settingKey = $settingValue;
                                 }
-                                if (in_array($settingKey, $this->publicFieldFoo)) {
+                                if (in_array($settingKey, $this->getFieldFoo())) {
                                     if ($settingKey == $settingValue) {
                                         $snakelikes[$settingValue] = $settingValue;
                                     } else {
@@ -127,17 +127,17 @@ class AdminConfigController extends Controller
             $footer->disableEditingCheck();
             $footer->disableCreatingCheck();
         });
-        $form->setTitle(config('admin.extensions.admin-config.title', 'Title'));
+        $form->setTitle(config('admin.extensions.admin-config.action', ' '));
         return $form;
-    }
-
-    public function store()
-    {
-        return $this->form()->configStore();
     }
 
     public function update()
     {
         return $this->form()->configUpdate();
+    }
+
+    protected function getFieldFoo()
+    {
+        return $this->publicFieldFoo;
     }
 }

@@ -5,7 +5,6 @@ use Encore\Admin\Form;
 use Encore\Admin\Form\Field;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConfigForm extends Form
@@ -13,16 +12,32 @@ class ConfigForm extends Form
 
     public function configEdit()
     {
+        $this->getConfigValues();
+        return $this;
+    }
+
+    public function getConfigValues($is_edit = false)
+    {
         $data = $this->model->pluck('value', 'name')->toArray();
         $values = [];
         foreach ($data as $key => $val) {
             $k = str_replace('.', '_', $key);
             $values[$k] = $val;
         }
-        $this->builder()->fields()->each(function (Field $field) use ($values) {
-            $field->fill($values);
+
+        $this->builder()->fields()->each(function (Field $field) use ($values, $is_edit) {
+            if ($field instanceof Field\MultipleImage
+            or $field instanceof Field\MultipleFile) {
+                if (isset($values[$field->column()])) {
+                    $values[$field->column()] = explode(',', $values[$field->column()]);
+                }
+            }
+            if ($is_edit) {
+                $field->setOriginal($values);
+            } else {
+                $field->fill($values);
+            }
         });
-        return $this;
     }
 
     public function configUpdate()
@@ -35,16 +50,7 @@ class ConfigForm extends Form
 
         $data = $this->handleFileDelete($data);
 
-        $valuesOrigin = $this->model->pluck('value', 'name')->toArray();
-        $values = [];
-        foreach ($valuesOrigin as $key => $val) {
-            $k = str_replace('.', '_', $key);
-            $values[$k] = $val;
-        }
-
-        $this->builder->fields()->each(function (Field $field) use ($values) {
-            $field->setOriginal($values);
-        });
+        $this->getConfigValues(true);
 
         // Handle validation errors.
         if ($validationMessages = $this->validationMessages($data)) {
