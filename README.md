@@ -63,6 +63,20 @@ http://your-host/admin/admin-config
 
 
 
+扩展配置：
+
+```php
+'extensions' => [
+    'admin-config' => [
+        'title'=>'AdminConfig',
+        'description'=>'Manage your profiles as profiles',
+        'action'=>' ',
+    ],
+],
+```
+
+
+
 ## 效果示例：
 
 配置文件：

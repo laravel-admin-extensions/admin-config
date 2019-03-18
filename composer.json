@@ -1,6 +1,6 @@
 {
     "name": "fourn/admin-config",
-    "description": "advanced laravel-admin config",
+    "description": "Manage your profiles as profiles",
     "type": "library",
     "keywords": ["laravel-admin", "extension", "config"],
     "homepage": "https://github.com/fourn/admin-config",
