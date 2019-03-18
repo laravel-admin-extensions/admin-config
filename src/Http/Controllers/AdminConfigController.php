@@ -11,69 +11,104 @@ use Illuminate\Routing\Controller;
 
 class AdminConfigController extends Controller
 {
+    public $publicFieldFoo = [
+        'default', 'attribute', 'help', 'placeholder', 'rules', 'options',
+        'rows', 'format', 'states', 'symbol', 'max', 'min',
+        'uniqueName', 'removable', 'stacked'
+    ];
+
+    public $rangeFoo = [
+        'timeRange', 'dateRange', 'datetimeRange'
+    ];
+
     public function index(Content $content)
     {
         return $content
-            ->header('Title')
-            ->description('Description')
+            ->header(config('admin.extensions.admin-config.header', 'Header'))
+            ->description(config('admin.extensions.admin-config.description', 'Description'))
             ->body($this->form()->configEdit());
     }
 
     protected function form()
     {
-        $tabs = [
-            'weixin',
-        ];
-        $fields = [
-            'appid' => ['label'=>'公众号id', 'type'=>'text'],
-            'appid2' => ['label'=>'公众号id2', 'type'=>'select', 'options'=>['op1', 'op2']],
-            'appid3' => ['label'=>'公众号id3'],
-            'appid4' => ['label'=>'公众号id4'],
-        ];
-        // 单一参数连续用法
-        $publicFieldFoo = [
-            'default', 'attribute', 'help', 'placeholder', 'rules', 'options',
-            'rows', 'format', 'states', 'symbol', 'max', 'min',
-            'uniqueName', 'removable', 'stacked'
-        ];
-        // $arguments
-//        $tabs = config('adminconfig.admin_config_groups');
+        $tabs = config('admin-config.admin_config_groups');
         $form = new ConfigForm(new AdminConfigModel());
         if ($tabs) {
             foreach ($tabs as $prefix => $title) {
+                // When prefixes are configured only, the label key value can be undefined
                 if (is_numeric($prefix) && is_string($title)) {
                     $prefix = $title;
                 }
-//                $fields = config('adminconfig.' . $prefix);
-                $form->tab($title, function (ConfigForm $form) use ($fields, $prefix, $publicFieldFoo){
+                $fields = config('admin-config.' . $prefix);
+                $form->tab($title, function (ConfigForm $form) use ($fields, $prefix){
                     foreach ($fields as $name => $settings) {
+
+                        // When only the field name is configured, the field key value can be undefined
                         if (is_numeric($name) && is_string($settings)) {
                             $name = $settings;
                             $settings = [];
                         }
-                        $fieldType = isset($settings['type']) ? $settings['type'] : 'text';
-                        $fieldName = "{$prefix}.{$name}";
-                        if (isset($form::$availableFields[$fieldType])) {
-                            // 构建field
-                            $field = $form->$fieldType($fieldName, $settings['label'] ?? $name);
 
-                            // 调用单一参数或者没有参数的蛇形方法
+                        // The field type must have type as the key name
+                        $fieldType = isset($settings['type']) ? $settings['type'] : 'text';
+                        $fieldName = "{$prefix}_{$name}";
+                        unset($settings['type']);
+
+                        // Determine whether the field type is supported
+                        if (isset($form::$availableFields[$fieldType])) {
+
                             foreach ($settings as $settingKey => $settingValue) {
-                                // 没有参数的蛇形方法
+
+                                // Filter out serpentine invocation methods in the configuration to support single or no arguments
+                                $key = $settingKey;
+                                // Snake methods with no parameters
                                 if (is_numeric($settingKey) && is_string($settingValue)) {
                                     $settingKey = $settingValue;
                                 }
-                                // 过滤出 单一参数或者没有参数的蛇形方法
-                                if (in_array($settingKey, $publicFieldFoo)) {
-                                    if ($settingKey = $settingValue) {
-                                        $field->$settingKey();
+                                if (in_array($settingKey, $this->publicFieldFoo)) {
+                                    if ($settingKey == $settingValue) {
+                                        $snakelikes[$settingValue] = $settingValue;
                                     } else {
-                                        $field->$settingKey($settingValue);
+                                        $snakelikes[$settingKey] = $settingValue;
                                     }
+                                    unset($settings[$key]);
+                                }
+
+                                // Filter out the callback method
+                                if ($settingValue instanceof \Closure) {
+                                    $callbacks[] = $settingValue;
+                                    unset($settings[$key]);
                                 }
                             }
-                            if (isset($settings['callback']) && $settings['callback'] instanceof \Closure) {
-                                call_user_func($settings['callback'], $field);
+
+                            // Build the field with the remaining parameters
+                            $settings = array_values($settings);
+                            if (in_array($fieldType, $this->rangeFoo)) {
+                                $fieldNameEnd = $fieldName . '_end';
+                                $fieldName = $fieldName . '_start';
+                                array_unshift($settings, $fieldNameEnd);
+                            }
+                            $field = $form->$fieldType($fieldName, ...$settings);
+
+
+                            // Call the snake method
+                            if (isset($snakelikes)) {
+                                foreach ($snakelikes as $foo => $params) {
+                                    if ($foo == $params) {
+                                        $field->$foo();
+                                    } else {
+                                        $field->$foo($params);
+                                    }
+                                }
+                                unset($snakelikes);
+                            }
+
+                            // Call the callback method
+                            if (isset($callbacks)) {
+                                foreach ($callbacks as $callback) {
+                                    call_user_func($callback, $field);
+                                }
+                                unset($callback);
                             }
                         }
                     }
@@ -92,12 +127,17 @@ class AdminConfigController extends Controller
             $footer->disableEditingCheck();
             $footer->disableCreatingCheck();
         });
-        $form->setTitle('Config');
+        $form->setTitle(config('admin.extensions.admin-config.title', 'Title'));
         return $form;
     }
 
     public function store()
     {
         return $this->form()->configStore();
+    }
+
+    public function update()
+    {
+        return $this->form()->configUpdate();
     }
 }

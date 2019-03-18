@@ -9,21 +9,16 @@ class AdminConfigServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function boot(AdminConfig $extension)
+    public function boot()
     {
         if (! AdminConfig::boot()) {
             return ;
         }
 
-        if ($views = $extension->views()) {
-            $this->loadViewsFrom($views, 'admin-config');
-        }
-
-        if ($this->app->runningInConsole() && $assets = $extension->assets()) {
-            $this->publishes(
-                [$assets => public_path('vendor/fourn/admin-config')],
-                'admin-config'
-            );
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/admin-config.php' => config_path('admin-config.php')
+            ], 'admin-config');
         }
 
         $this->app->booted(function () {
