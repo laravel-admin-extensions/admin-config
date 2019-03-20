@@ -40,6 +40,6 @@ return [
         'value19'=>['type'=>'tags'],
     ],
     'sample2' => [
-        '2_value'
+        'value'
     ]
 ];

@@ -84,8 +84,8 @@ class AdminConfigController extends Controller
                             // Build the field with the remaining parameters
                             $settings = array_values($settings);
                             if (in_array($fieldType, $this->rangeFoo)) {
-                                $fieldNameEnd = $fieldName . '_end';
-                                $fieldName = $fieldName . '_start';
+                                $fieldNameEnd = $fieldName . '-end';
+                                $fieldName = $fieldName . '-start';
                                 array_unshift($settings, $fieldNameEnd);
                             }
                             $field = $form->$fieldType($fieldName, ...$settings);

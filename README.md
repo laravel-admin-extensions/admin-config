@@ -44,7 +44,7 @@ php artisan migrate
 artisan vendor:publish --tag=admin-config
 ```
 
-第二步：在配置文件中加入配置组及配置项
+第二步：在配置文件中加入配置组及配置项，详细参考下面的"配置文件语法"
 
 第三步：使用laravel中的config函数
 
@@ -83,13 +83,78 @@ http://your-host/admin/admin-config
 
 
 
+## 配置文件语法：
+
+配置文件发布后路径为：config/admin-config.php
+
+定义配置组：
+
+```php
+'admin_config_groups' => [
+  
+	// 配置组值 => tab选项卡显示文字
+	'sample' => 'sample-name',
+  
+	// 省略写法，等同于 'sample2' => 'sample2'
+	'sample2'
+  
+],
+```
+
+定义配置项：
+
+```php
+// 配置组名作为键，可以使用config('sample')访问一组值
+'sample' => [
+  
+	// 默认情况写法，以下等同于 'value' => ['label'=>'value', 'type'=>'test']
+	// 可以使用config('sample.value')访问其值
+	'value',
+  
+	// 支持配置链式调用，以下将执行$form->text('value1')->help('help content')->default('default value')
+	'value1'=>['help'=>'help content', 'default'=>'default value'],
+  
+	// 支持几乎所有Encore\Admin\Form\Field对象的链式调用方法，非链式调用的值将在Field实例化时作为参数传入
+	// 以下将执行$form->test('value2', 'label text')->placeholder('typing...')->rules('required')
+	'value2'=>['label text', 'placeholder'=>'typing...', 'rules'=>'required'],
+  
+	// 需要定义字段类型，type键值不可省略
+	'value3'=>['type'=>'select', 'select label text', 'options'=>['option1'=>'option1', 			'option2'=>'option2']],
+	'value5'=>['type'=>'checkbox', 'options'=>['foo'=>'foo', 'bar'=>'bar']],
+	'value6'=>['type'=>'ip'],
+	'value7'=>['type'=>'mobile'],
+	'value8'=>['type'=>'color'],
+	'value9'=>['type'=>'time', 'format'=>'HH:mm'],
+  
+	// 范围类型的字段会分别存储为两个配置项，'sample.value10.start' 及 'sample.value10.end'
+	'value10'=>['type'=>'dateRange', 'dateRange label text'],
+	'value11'=>['type'=>'number', 'min'=>100, 'default'=>100],
+	'value12'=>['type'=>'rate'],
+  
+	// 支持没有参数的链式调用，以下将执行$form->image('value13')->uniqueName()
+	'value13'=>['type'=>'image', 'uniqueName'],
+	'value14'=>['type'=>'file', 'uniqueName'],
+	'value17'=>['type'=>'editor'],
+	'value18'=>['type'=>'switch'],
+	'value19'=>['type'=>'tags'],
+  
+	// 以下一对多关系将被自动转化为逗号隔开的数据存入数据库
+	'value4'=>['type'=>'listbox', 'options'=>['foo'=>'foo', 'bar'=>'bar']],
+	'value15'=>['type'=>'multipleImage', 'removable', 'uniqueName'],
+	'value16'=>['type'=>'multipleFile', 'removable', 'uniqueName'],
+  
+],
+// 对应配置组值
+'sample2' => [
+	'value'
+]
+```
+
+
+
 ## 效果示例：
 
-配置文件：
-
-![Snipaste_2019-03-18_16-15-06](https://ws2.sinaimg.cn/large/006tKfTcgy1g171pq3t4oj31730pk0vl.jpg)
-
-生成的表单：
+配置文件自动转化为表单：
 
 ![Snipaste_2019-03-18_16-14-05](https://ws2.sinaimg.cn/large/006tKfTcgy1g171q2oy8vj31b70qjwgd.jpg)
 
