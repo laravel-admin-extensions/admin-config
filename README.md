@@ -3,7 +3,7 @@ admin-config
 
 基于[laravel-admin](https://github.com/z-song/laravel-admin)的数据库配置管理工具，仅通过配置文件就可生成整个表单，支持使用tab页对配置项进行分组。
 
-![Untitled](https://ws1.sinaimg.cn/large/006tKfTcgy1g172wkrublg313z0n31kx.gif)
+![Untitled](https://ws4.sinaimg.cn/large/006tKfTcgy1g194izbkghg312y0mr1ky.gif)
 
 ## 安装：
 
