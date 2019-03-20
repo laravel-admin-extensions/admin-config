@@ -51,7 +51,7 @@ class AdminConfigController extends Controller
 
                         // The field type must have type as the key name
                         $fieldType = isset($settings['type']) ? $settings['type'] : 'text';
-                        $fieldName = "{$prefix}_{$name}";
+                        $fieldName = $prefix . ConfigForm::SEPARATOR . $name;
                         unset($settings['type']);
 
                         // Determine whether the field type is supported
@@ -84,8 +84,8 @@ class AdminConfigController extends Controller
                             // Build the field with the remaining parameters
                             $settings = array_values($settings);
                             if (in_array($fieldType, $this->rangeFoo)) {
-                                $fieldNameEnd = $fieldName . '-end';
-                                $fieldName = $fieldName . '-start';
+                                $fieldNameEnd = $fieldName . ConfigForm::SEPARATOR . 'end';
+                                $fieldName = $fieldName . ConfigForm::SEPARATOR . 'start';
                                 array_unshift($settings, $fieldNameEnd);
                             }
                             $field = $form->$fieldType($fieldName, ...$settings);

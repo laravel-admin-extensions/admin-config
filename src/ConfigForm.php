@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ConfigForm extends Form
 {
+    const SEPARATOR = '-';
 
     public function configEdit()
     {
@@ -22,7 +23,7 @@ class ConfigForm extends Form
         $data = $this->model->pluck('value', 'name')->toArray();
         $values = [];
         foreach ($data as $key => $val) {
-            $k = str_replace('.', '-', $key);
+            $k = str_replace('.', self::SEPARATOR, $key);
             $values[$k] = $val;
         }
 
@@ -71,7 +72,7 @@ class ConfigForm extends Form
 
             if ($updates) {
                 foreach ($updates as $key => $val) {
-                    $name = str_replace('-', '.', $key);
+                    $name = str_replace(self::SEPARATOR, '.', $key);
                     if (is_null($val))
                         $val = '';
                     if (is_array($val)) {
