@@ -11,6 +11,17 @@ return [
         'sample' => 'sample-name',
         'sample2'
     ],
+    /*
+     * --------------------------------------------------------------------------
+     * Define configuration permissions
+     * --------------------------------------------------------------------------
+     * Each configuration group will be visible to all roles if not specified or empty array.
+     * Example: ['role1', 'role2']
+     */
+    'admin_config_permissions' => [
+        'sample' => [],
+        'sample2' => [],
+    ],
     /**
      * --------------------------------------------------------------------------
      * Define configuration items
