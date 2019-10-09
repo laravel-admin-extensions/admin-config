@@ -5,6 +5,7 @@ namespace Fourn\AdminConfig\Http\Controllers;
 use Encore\Admin\Form\Footer;
 use Encore\Admin\Form\Tools;
 use Encore\Admin\Layout\Content;
+use Encore\Admin\Facades\Admin;
 use Fourn\AdminConfig\AdminConfigModel;
 use Fourn\AdminConfig\ConfigForm;
 use Illuminate\Routing\Controller;
@@ -32,9 +33,15 @@ class AdminConfigController extends Controller
     protected function form()
     {
         $tabs = config('admin-config.admin_config_groups');
+        $permissions = config('admin-config.admin_config_permissions');
         $form = new ConfigForm(new AdminConfigModel());
         if ($tabs) {
             foreach ($tabs as $prefix => $title) {
+                // Skip building the tab if no permission
+                if (!Admin::user()->isAdministrator() && !empty($permissions[$prefix]) && !Admin::user()->inRoles($permissions[$prefix])) {
+                    continue;
+                }
+
                 // When prefixes are configured only, the label key value can be undefined
                 if (is_numeric($prefix) && is_string($title)) {
                     $prefix = $title;
