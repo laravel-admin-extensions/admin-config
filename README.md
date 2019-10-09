@@ -7,46 +7,29 @@ admin-config
 
 ## 安装：
 
-步骤一：使用composer：
+步骤一、使用 composer 安装
 
 ```
 composer require fourn/admin-config
 ```
 
-如果你已经依赖并配置好了官方提供的 [config](https://github.com/laravel-admin-extensions/config) 可以跳过下面的步骤
-
-步骤二：全局引入后台配置项：
-
-```php
-use Encore\Admin\Config\Config;
-class AppServiceProvider extends ServiceProvider
-{
-    public function boot()
-    {
-        if (\Schema::hasTable('admin_config') && class_exists(Config::class)) {
-            Config::load();
-        }
-    }
-}
-```
-
-步骤三：执行数据库迁移：
+步骤二、执行数据库迁移
 
 ```php
 php artisan migrate
 ```
 
-## 使用方法：
-
-第一步：发布配置文件：
+步骤三、发布配置文件
 
 ```
 artisan vendor:publish --tag=admin-config
 ```
 
-第二步：在配置文件中加入配置组及配置项，详细参考下面的"配置文件语法"
+## 使用方法：
 
-第三步：使用laravel中的config函数
+第一步：在配置文件中加入配置组及配置项，详细参考下面的"配置文件语法"
+
+第二步：使用laravel中的config函数
 
 ```
 // 获取一组
@@ -54,8 +37,6 @@ config('sample')
 // 获取一项
 config('sample.value')
 ```
-
-
 
 ## 其他：
 
